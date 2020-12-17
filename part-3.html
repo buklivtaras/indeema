@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indeema | Part 3</title>
+    <link rel="stylesheet" href="css/style-part-3.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+    <div id="app">
+        <div class="content-wrapper">
+            <div class="generate-button-wrapper">
+                <form onsubmit="addNewRow('user-table-wrapper');return false;" action="" id="new-user-row-form">
+                    <div class="input-wpapper">
+                        <input type="text" id="user-from-name" data-name="name" placeholder="Name" required>
+                    </div>
+                    <div class="input-wpapper">
+                        <input type="text" id="user-from-surname" data-name="surname" placeholder="Surname" required>
+                    </div>
+                    <div class="input-wpapper">
+                        <input type="email" id="user-from-email" data-name="email" placeholder="Email" required>
+                    </div>
+                    <div class="input-wpapper">
+                        <input type="date" id="user-from-date" data-name="date" required>
+                    </div>
+                    <div class="input-wpapper">
+                        <button onclick="">Add new row</button>
+                    </div>
+                </form>
+            </div>
+            <div id="user-table-wrapper" class="table-wrapper">
+                <div class="table-actions-wrapper">
+                    <button onclick="deleteRows();">Delete</button>
+                </div>
+                
+                <table id="user-table">
+                    <thead>
+                        <tr>
+                            <th />
+                            <th>Edit</th>
+                            <th>Delete</th>
+                            <th>Name</th>
+                            <th>Surname</th>
+                            <th>Email</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        const table = document.getElementById('user-table');
+        const fields = new Object({
+            'checkbox': {
+                tag: 'input',
+                type: 'checkbox',
+            },
+            'edit': {
+                tag: 'a',
+                href: '#',
+                
+            },
+            'delete': {
+                tag: 'a',
+                href: '#',
+            },
+            'name': {
+                tag: 'div',
+                type: 'text'
+            },
+            'surname': {
+                tag: 'div',
+                type: 'text'
+            },
+            'email': {
+                tag: 'div',
+                type: 'text'
+            },
+            'date': {
+                tag: 'div',
+                type: 'date'
+            }
+        });
+
+        function addNewRow(userTableWrapper) {
+            if( document.getElementById(userTableWrapper).style.display == '' ) { document.getElementById(userTableWrapper).style.display = 'block' }
+            
+            const tRowId = ('modal-id-' + Math.floor(Math.random() * Math.floor(99999999)) );
+
+            // Create elements;
+            const tableRow = document.createElement('tr');
+            tableRow.setAttribute('id', tRowId);
+            const formInputsData = getDataOfForm("new-user-row-form");
+            
+            for (const [key, value] of Object.entries(fields) ){
+                const tableData = document.createElement('td');
+                const tableInput = document.createElement(value.tag);
+                tableInput.setAttribute('id', `${tRowId}-${key}`);
+
+                if( formInputsData.indexOf(key) != -1){
+                    tableInput.textContent = document.getElementById(`user-from-${key}`).value
+                }
+
+                for (const [attr, values] of Object.entries(fields[key]) ){
+                    tableRow.appendChild(tableData);
+                    tableData.appendChild(tableInput);
+                    addAttibutes(tableInput, { [attr]: values} );
+                }
+                if(key == 'edit'){
+                    tableInput.textContent = 'Edit';
+                    tableInput.setAttribute('onClick', `editRow('${tRowId}')`);
+                } else if (key == 'delete') {
+                    tableInput.textContent = 'delete';
+                    tableInput.setAttribute('onClick', `deleteRow('${tRowId}')`);
+                }
+            }
+            document.getElementById('new-user-row-form').reset();
+            setDateNow();
+            
+            table.querySelector('tbody').appendChild(tableRow).setAttribute('id', tRowId);
+        }
+
+        // Function adding attributes for element 
+        function addAttibutes(elem, attributes){
+            for(let key in attributes){
+                elem.setAttribute(key, attributes[key]);
+            }
+        }
+
+        // Function close and delete elements
+        function deleteRows(){
+            const rows = table.querySelectorAll('input:checked')
+            rows.forEach(elem => {
+                elem.closest('tr').classList.add('hide-element');
+                setTimeout(() => {
+                    elem.closest('tr').remove();
+                }, 700);
+            });
+            
+        }
+        // Function close and delete elements
+        function deleteRow(row){
+            document.getElementById(row).classList.add('hide-element');
+            setTimeout(() => {
+                document.getElementById(row).remove();
+            }, 700);
+            
+        }
+
+        // Function for edit fieds
+        function editRow(row){
+            const inputs = document.getElementById(row).querySelectorAll('td div');
+            inputs.forEach( input => {
+                input.setAttribute('contenteditable', 'true');
+            });
+
+            let editButton = document.getElementById(`${row}-edit`)
+            editButton.textContent = 'Save';
+            editButton.setAttribute('onClick', `saveRow('${row}')`)
+        }
+
+        function saveRow(row){
+            const inputs = document.getElementById(row).querySelectorAll('td div');
+            inputs.forEach( input => {
+                input.setAttribute('contenteditable', 'false');
+            });
+            let editButton = document.getElementById(`${row}-edit`)
+            editButton.textContent = 'Edit';
+            editButton.setAttribute('onClick', `editRow('${row}')`)
+        }
+
+        function getDataOfForm(formId){
+            const formInputs = document.forms[formId];
+            let inputData = new Array();
+            for (const [key, value] of Object.entries(formInputs)){
+                inputData.push(value.dataset.name);
+            }
+           return inputData;
+        }
+
+        const setDateNow = function() {
+            let today = new Date();
+            today = today.getFullYear()+'-'+today.getMonth()+'-'+today.getDate();
+            document.getElementById('user-from-date').value = today;
+        };
+        setDateNow();
+    </script>
+    
+</body>
+</html> 

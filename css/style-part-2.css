@@ -1,0 +1,38 @@
+* {box-sizing: border-box;}
+html, body {
+    margin: 0;
+    min-height: 100vh;
+}
+#app {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+#create-button-wrapper {
+    flex: 0;
+    padding: 1em 2em;
+    text-align: center;
+    border-bottom: 1px solid #999999;
+    box-shadow: 0 3px 5px #999999;
+}
+#create-button-wrapper button {
+    font-size: 16px;
+    padding: .5rem 1rem;
+    text-transform: uppercase;
+}
+#modal-windows-wrapper {
+    flex: auto;
+    position: relative;
+}
+#modal-windows-wrapper .modal-block {
+    position: absolute;
+    padding: 1.5rem;
+    border: 1px solid #999999;
+    box-shadow: 0 3px 5px #999999;
+    background-color: #cccccc;
+}
+#modal-windows-wrapper .modal-block .button-close {
+    font-size: 14px;
+    text-transform: uppercase;
+    padding: .7rem;
+}

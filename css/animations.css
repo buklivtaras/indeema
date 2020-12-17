@@ -1,0 +1,13 @@
+@keyframes smoothlyHide {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+.hide-element {
+    animation-name: smoothlyHide;
+    animation-duration: .7s;
+}

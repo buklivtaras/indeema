@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indeema | Part 1</title>
+    <link rel="stylesheet" href="css/style-part-1.css">
+</head>
+<body>
+    <div id="app"></div>
+</body>
+
+    <script type="text/javascript" src="js/main.js"></script>
+    <script>
+        const app = document.getElementById('app');
+
+        /* Creating elements */
+        const form = document.createElement('form');
+        const formInputSum = document.createElement('input');
+        const formInputPrice = document.createElement('input');
+        const formButton = document.createElement('button');
+        const resultField = document.createElement('div');
+
+        /* Insert elemnts into DOM */
+        app.appendChild(form);
+        app.appendChild(resultField).setAttribute('id', 'result-field');
+        form.appendChild(formInputSum).setAttribute('id', 'sum');
+        form.appendChild(formInputPrice).setAttribute('id', 'price');
+        form.appendChild(formButton).textContent = "Get result";
+        // formButton.
+
+        /* Adding attrributes to elements  */
+        const inputAttributes = {
+            class: 'form-input',
+            placeholder: "Enter Sum",
+            type: 'text',
+            pattern: '[0-9]+([\.][0-9]{0,2})?',
+            maxlength: '8',
+            title: 'Fill in format: xxxxx.xx',
+            step: '0.000001',
+            required: ''
+        };
+        addAttibutes(form, {
+            method: 'get',
+            action: '',
+            onSubmit: 'getResult();return false;'
+        });
+        
+        addAttibutes(formInputSum, inputAttributes);
+        addAttibutes(formInputPrice, inputAttributes);
+        addAttibutes(formButton, {
+            type: 'submit',
+            class: 'form-button',
+        });
+
+        /* Function for get result */
+        function getResult(){
+            const summa = parseFloat(formInputSum.value, 10);
+            const price = parseFloat(formInputPrice.value, 10);
+            let rest = (price - summa).toFixed(2);
+            const cents = (rest.toString().split('').slice(-2)).join('');
+            const restCentsText = getRestCent(cents);
+            rest = parseInt(rest) ? `${parseInt(rest)} dollars,` : '';
+            
+            resultField.innerHTML = (`“Your rest is ${rest} ${restCentsText}`);
+        }
+
+        function getRestCent(cents){
+
+            const c = new Array(50, 25, 20, 10, 5, 1);
+        
+            let restText = new String(); 
+
+            if (cents == 50) { // if cents equal 50
+                restText = "50 cents";
+            } 
+            else{ 
+                if (cents > 50){ // if cents more than 50
+                    restText += "50 cents, ";
+                    cents -= 50;
+                }
+                if(cents == 25) { // if cents equal 25
+                    restText += "25 cents";
+                }
+                else {
+                    if (cents > 25) { // if cents more than 25
+                        restText += "25 cents, ";
+                        cents -= 25;
+                    }
+                    if (cents == 20){ // if cents equal 20
+                        restText += "10 cents, 10 cents";
+                    }
+                    else {
+                        if (cents > 20) {
+                            restText += "10 cents, 10 cents, ";
+                            cents -=20;
+                        }
+                        if (cents == 10) { // if cents equal 10
+                            restText += "10 cents";
+                        }
+                        else {
+                            if (cents > 10) {
+                                restText += "10 cents, ";
+                                cents -= 10;
+                            }
+                            if (cents == 5) { // if cents equal 5
+                                restText += "5 cents";
+                            }
+                            else {
+                                if(cents > 5) {
+                                    cents -= 5;
+                                    restText += `5 cents, ${cents} cents`;
+                                }
+                                else {
+                                    restText += `${cents} cents`;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return restText;
+        }
+
+    </script>
+
+</html>

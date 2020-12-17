@@ -1,0 +1,54 @@
+* {
+    box-sizing: border-box;
+}
+html, body {
+    margin: 0;
+    font-family: sans-serif;
+}
+
+.content-wrapper {
+    max-width: 992px;
+    margin: auto;
+}
+.content-wrapper .generate-button-wrapper {
+    padding: 1em;
+    text-align: center;
+}
+.content-wrapper .generate-button-wrapper button {
+    padding: .5rem 1rem;
+    text-transform: uppercase;
+    font-size: 16px;
+}
+.content-wrapper .table-wrapper {
+    padding: 2em .5em;
+}
+.table-wrapper table {
+    border-collapse: collapse; 
+    width: 100%;
+}
+.table-wrapper table thead tr th, .table-wrapper table tbody tr td{
+    border: 2px solid #cccccc;
+}
+.table-wrapper table tbody tr td input::not[type='checkbox'] {
+    width: 100%;
+    border-bottom: 1px solid black;
+}
+.table-wrapper table tbody tr td input[disbled] {
+    border: none;
+    color: #444444;
+}
+.table-wrapper {
+    display: none;
+}
+.table-wrapper table input{
+    border: none;
+}
+.table-wrapper table input:focus{
+    outline: none;
+}
+.table-actions-wrapper #apply-button {
+    display: none;
+}
+.d-inline {
+    display: inline!important;
+}

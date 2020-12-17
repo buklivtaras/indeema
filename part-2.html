@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indeema | Part 2</title>
+    <link rel="stylesheet" href="css/style-part-2.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+    <div id="app">
+        <div id="create-button-wrapper">
+            <button onclick="createModal()">Create modal</button>
+        </div>
+        <div id="modal-windows-wrapper"></div>
+    </div>
+    
+    <script type="text/javascript" src="js/main.js"></script>
+    <script>
+        const modalWindowsWrapper = document.getElementById('modal-windows-wrapper');
+        let modalPosition = {
+            zIndex: 1000,
+            top: '30',
+            left: '30'
+        };
+
+        /* Function adding attributes for element */
+        function addAttibutes(elem, attributes){
+            for(let key in attributes){
+                elem.setAttribute(key, attributes[key]);
+            }
+        }
+
+        /* Function close and delete element */
+        function closeModal(modalId){
+            document.getElementById(modalId).classList.add('hide-element');
+            setTimeout(() => {
+                document.getElementById(modalId).remove();
+            }, 700);
+        }
+
+
+        function createModal(){
+
+            /* Create elments */
+            const modalId = ('midal-id-' + Math.floor(Math.random() * Math.floor(99999999)) );
+            const modalBlock = document.createElement('div');
+            const closeButton = document.createElement('button');
+
+            addAttibutes(modalBlock, {
+                'id': modalId,
+                'class': 'modal-block'
+            });
+            closeButton.textContent = 'Close this window';
+            addAttibutes(closeButton, {
+                onClick: `closeModal('${modalId}')`,
+                class: 'button-close'
+            });
+
+            for (let [key, value] of Object.entries(modalPosition)) {
+                modalPosition[key] = parseInt( modalPosition[key] ) + 30;
+                modalBlock.style[key] = modalPosition[key] + 'px';
+
+            }
+
+            modalBlock.addEventListener("click", modifyText, false);
+            modalBlock.appendChild(closeButton);
+            modalWindowsWrapper.appendChild(modalBlock).setAttribute('id', modalId);
+        }
+
+        function modifyText() {
+            modalPosition.zIndex = parseInt( modalPosition.zIndex ) + 1;
+            this.style.zIndex = modalPosition.zIndex;
+        }
+
+
+        
+    </script>
+</body>
+</html>
